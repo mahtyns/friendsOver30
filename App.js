@@ -1,9 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import planList from './text-data/planList';
-import { Countdown } from 'react-native-element-timer';
 
 export default function App() {
+
+  const [timer, setTimer] = useState(false)
+  const [responseTime, setResponseTime] = useState(15)
+
+  const startTimer = () => {
+    setTimer(true)
+  }
+
+  useEffect(() => {
+        
+      if(timer) {
+        // if (responseTime === 0 ) {
+        //     clearInterval;
+        //     setTimer(false)}
+        setInterval(()=> {
+          setResponseTime(responseTime => responseTime - 1);
+        }, 1000);
+        if (responseTime === 0) {alert("Time over")}
+      }
+      else setResponseTime(15)
+      
+  }, [timer])
+
+
   return (
     <View style={styles.container}>
         <View style={styles.gameWrapper}>
@@ -17,11 +40,14 @@ export default function App() {
           <Text >Here comes the plan for this weekend:</Text>
            <Text style={styles.planProposal}>{planList[0]}</Text>
         </View>
+        {timer ? <View>
+          <Text>{responseTime}</Text>
+        </View> : null}
 
         <View style={styles.countdownTimerWrapper}>
           <Button
           title='Start now'
-          onPress={null} />
+          onPress={startTimer} />
         </View>
         <View> 
           <Text style={styles.credits}>This app was made for educational purposes. Idea from Instagram meme account Make Life Harder</Text>
